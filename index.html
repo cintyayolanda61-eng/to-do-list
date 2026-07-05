@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZenTask - To-Do List</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header Area -->
+    <header>
+      <div class="logo-area">
+        <i class="fa-solid fa-feather-pointed"></i>
+        <h1>ZenTask by-cintya</h1>
+      </div>
+      <div class="header-actions">
+        <div class="time-badge animate-scale-in">
+          <i class="fa-regular fa-clock"></i>
+          <span id="digital-clock">00:00:00</span>
+        </div>
+        <button id="theme-btn" class="theme-toggle ripple-btn" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Section -->
+    <div class="dashboard-grid">
+      <!-- Left Column / Widgets -->
+      <div class="sidebar-col">
+        
+        <!-- Welcome Hero -->
+        <div class="hero-greeting animate-scale-in">
+          <p class="date" id="current-date">Kamis, 15 Januari 2026</p>
+          <h2 id="greeting-text">Selamat Pagi!</h2>
+          <div class="quote-box">
+            <i class="fa-solid fa-quote-left"></i>
+            <span id="motivational-quote">"Setiap hari adalah kesempatan baru untuk tumbuh."</span>
+          </div>
+        </div>
+
+        <!-- Progress Tracker Grid -->
+        <div class="glass-card animate-scale-in">
+          <h3 class="form-title" style="font-size: 1.25rem; margin-bottom: 1.2rem;">
+            <i class="fa-solid fa-chart-line"></i> Progres Tugas
+          </h3>
+          <div class="tracker-widget">
+            <div class="progress-circle-container">
+              <svg class="progress-circle" width="100" height="100">
+                <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                <circle id="circle-fill" class="circle-fill" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+              </svg>
+              <div class="progress-percentage" id="progress-percent">0%</div>
+            </div>
+            <div class="tracker-stats">
+              <div class="stat-row">
+                <span>Total</span>
+                <span id="stat-total" class="stat-count">0</span>
+              </div>
+              <div class="stat-row" style="color: var(--success)">
+                <span>Selesai</span>
+                <span id="stat-completed" class="stat-count">0</span>
+              </div>
+              <div class="stat-row" style="color: var(--text-secondary)">
+                <span>Tertunda</span>
+                <span id="stat-pending" class="stat-count">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini Calendar -->
+        <div class="glass-card animate-scale-in">
+          <div class="calendar-header">
+            <h3 id="calendar-month-year">Januari 2026</h3>
+            <div style="display: flex; gap: 10px;">
+              <button id="prev-month-btn" class="btn-action" style="width:28px; height:28px;"><i class="fa-solid fa-chevron-left"></i></button>
+              <button id="next-month-btn" class="btn-action" style="width:28px; height:28px;"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="calendar-container">
+            <div class="calendar-grid" id="calendar-days">
+              <!-- Days render here -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column / App Logic -->
+      <div class="main-col">
+        
+        <!-- Task Creator Form -->
+        <div class="glass-card task-form-wrapper animate-fade-up">
+          <h2 class="form-title"><i class="fa-solid fa-plus"></i> Buat Tugas Baru</h2>
+          <form id="task-form">
+            <div class="form-grid">
+              <div class="input-group full-width">
+                <label for="task-name">Nama Tugas *</label>
+                <input type="text" id="task-name" class="input-field" placeholder="Ketik apa yang ingin dikerjakan..." required>
+              </div>
+              
+              <div class="input-group full-width">
+                <label for="task-desc">Deskripsi</label>
+                <textarea id="task-desc" class="input-field" placeholder="Ketik keterangan tambahan jika diperlukan..."></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="task-deadline">Deadline *</label>
+                <input type="date" id="task-deadline" class="input-field" required>
+              </div>
+
+              <div class="input-group">
+                <label for="task-priority">Prioritas</label>
+                <select id="task-priority" class="input-field">
+                  <option value="low">Rendah (Low)</option>
+                  <option value="medium" selected>Sedang (Medium)</option>
+                  <option value="high">Tinggi (High)</option>
+                </select>
+              </div>
+
+              <div class="input-group full-width">
+                <label for="task-category">Kategori</label>
+                <select id="task-category" class="input-field">
+                  <option value="Study">Belajar (Study)</option>
+                  <option value="Personal" selected>Pribadi (Personal)</option>
+                  <option value="Work">Pekerjaan (Work)</option>
+                  <option value="Shopping">Belanja (Shopping)</option>
+                  <option value="Others">Lainnya (Others)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit ripple-btn">
+              <i class="fa-solid fa-circle-plus"></i> Tambah Tugas
+            </button>
+          </form>
+        </div>
+
+        <!-- Controls, Filters, Search -->
+        <div class="controls-wrapper animate-fade-up">
+          <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" class="input-field" placeholder="Cari nama atau deskripsi tugas...">
+          </div>
+
+          <div class="filters-row">
+            <select id="filter-category" class="filter-select">
+              <option value="all">Semua Kategori</option>
+              <option value="Study">Belajar (Study)</option>
+              <option value="Personal">Pribadi (Personal)</option>
+              <option value="Work">Pekerjaan (Work)</option>
+              <option value="Shopping">Belanja (Shopping)</option>
+              <option value="Others">Lainnya (Others)</option>
+            </select>
+
+            <select id="filter-priority" class="filter-select">
+              <option value="all">Semua Prioritas</option>
+              <option value="low">Rendah</option>
+              <option value="medium">Sedang</option>
+              <option value="high">Tinggi</option>
+            </select>
+
+            <select id="sort-by" class="filter-select">
+              <option value="deadline-asc">Deadline Terdekat</option>
+              <option value="deadline-desc">Deadline Terjauh</option>
+              <option value="custom">Urutan Kustom (Drag & Drop)</option>
+            </select>
+          </div>
+
+          <div class="status-tabs">
+            <div class="status-tab active" data-status="all">Semua</div>
+            <div class="status-tab" data-status="pending">Berjalan</div>
+            <div class="status-tab" data-status="completed">Selesai</div>
+            <div class="status-tab" data-status="favorites">Favorit</div>
+          </div>
+        </div>
+
+        <!-- Task List Render Area -->
+        <div class="tasks-container" id="tasks-list-container">
+          <!-- Dynamically populated tasks will be rendered here -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Edit Task Modal -->
+  <div class="modal-backdrop" id="edit-modal">
+    <div class="modal-content animate-scale-in">
+      <div class="modal-header">
+        <h3>Edit Tugas</h3>
+        <i class="fa-solid fa-xmark modal-close" id="edit-modal-close"></i>
+      </div>
+      <form id="edit-task-form">
+        <input type="hidden" id="edit-task-id">
+        <div class="form-grid" style="grid-template-columns: 1fr; gap: 1rem;">
+          <div class="input-group">
+            <label for="edit-task-name">Nama Tugas *</label>
+            <input type="text" id="edit-task-name" class="input-field" required>
+          </div>
+          <div class="input-group">
+            <label for="edit-task-desc">Deskripsi</label>
+            <textarea id="edit-task-desc" class="input-field"></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+            <div class="input-group">
+              <label for="edit-task-deadline">Deadline *</label>
+              <input type="date" id="edit-task-deadline" class="input-field" required>
+            </div>
+            <div class="input-group">
+              <label for="edit-task-priority">Prioritas</label>
+              <select id="edit-task-priority" class="input-field">
+                <option value="low">Rendah</option>
+                <option value="medium">Sedang</option>
+                <option value="high">Tinggi</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="edit-task-category">Kategori</label>
+            <select id="edit-task-category" class="input-field">
+              <option value="Study">Belajar (Study)</option>
+              <option value="Personal">Pribadi (Personal)</option>
+              <option value="Work">Pekerjaan (Work)</option>
+              <option value="Shopping">Belanja (Shopping)</option>
+              <option value="Others">Lainnya (Others)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="edit-modal-cancel">Batal</button>
+          <button type="submit" class="btn btn-primary ripple-btn">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-backdrop" id="delete-modal">
+    <div class="modal-content animate-scale-in" style="max-width: 400px; text-align: center;">
+      <div style="color: var(--danger); font-size: 3rem; margin-bottom: 1rem;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+      </div>
+      <h3 style="font-family: var(--font-title); font-size: 1.5rem; margin-bottom: 0.5rem;">Apakah Anda Yakin?</h3>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Tugas ini akan dihapus secara permanen dan tidak dapat dipulihkan kembali.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 12px;">
+        <button class="btn btn-secondary" id="delete-modal-cancel">Batal</button>
+        <button class="btn btn-danger ripple-btn" id="delete-modal-confirm">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- hubungkan javascript-->
+  <script src="script.js"></script>
+
+</body>
+</html>
